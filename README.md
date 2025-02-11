@@ -1,16 +1,46 @@
-# quizz
+# SneakQuiz
 
-A new Flutter project.
+Bienvenue sur SneakQuiz, une app de quiz pour Sneakers
 
-## Getting Started
+## Prérequis
 
-This project is a starting point for a Flutter application.
+Avant de commencer, assurez-vous d'avoir les éléments suivants installés sur votre machine :
 
-A few resources to get you started if this is your first Flutter project:
+- [Flutter SDK](https://flutter.dev/docs/get-started/install)
+- [Dart SDK](https://dart.dev/get-dart)
+- Un éditeur de code comme [Visual Studio Code](https://code.visualstudio.com/) ou autre
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Installation
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. Clonez ce dépôt sur votre machine locale :
+
+   ```bash
+   git clone https://github.com/votre-utilisateur/sneakquiz.git
+   ```
+
+2. Accédez au répertoire du projet :
+
+   ```bash
+   cd sneakquiz
+   ```
+
+3. Installez les dépendances Flutter :
+
+   ```bash
+   flutter pub get
+   ```
+
+## Exécution
+
+1. Connectez un appareil physique ou démarrez un émulateur.
+2. Exécutez l'application :
+
+   ```bash
+   flutter run
+   ```
+
+## Structure du projet
+
+- `home.dart` : Écran d'accueil de l'application.
+- `quizz.dart` : Écran du quiz.
+- `images` : Répertoire contenant les images utilisées dans l'application.
