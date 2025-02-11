@@ -1,4 +1,5 @@
-import 'dart:math'; //Avec je peux rendre les questions aléatoire en utiilisant la méthode shuffle et un rnadom
+import 'dart:async'; // Pour mon timer
+import 'dart:math'; // Pour que mes questions pop en mode aleatoires avec la methode suffle
 import 'package:flutter/material.dart';
 import 'package:quizz/models/questions.dart';
 
@@ -13,13 +14,71 @@ class _QuizScreenState extends State<QuizScreen> {
   final QuestionData questionData = QuestionData();
   int currentQuestionIndex = 0;
   int score = 0;
+  late Timer _timer;
+  int _timeRemaining = 60;
+  bool _isTimeUp = false;
 
   @override
   void initState() {
     super.initState();
     questionData.questionList.shuffle(Random());
+    startTimer();
   }
 
+// j'ai mis un timer en haut si tu termines pas avant tu perds (y'a un bug d'ailleurs si on termine avant la fin du timer et qu'on recommence il se reload pas)
+  void startTimer() {
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        if (_timeRemaining > 0) {
+          _timeRemaining--;
+        } else {
+          _isTimeUp = true;
+          _timer.cancel();
+          showEndDialog();
+        }
+      });
+    });
+  }
+
+// Mon petit popup de fin
+  void showEndDialog() {
+    String message;
+    if (score < 8) {
+      message = "Bahah grosse merde va !";
+    } else {
+      message = "Ouais... peux mieux faire.";
+    }
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Center(
+            child: Text(_isTimeUp ? "🎉 Temps écoulé !" : "🎉 Quiz terminé !"),
+          ),
+          content: Text(
+              "Votre score est de $score/${questionData.questionList.length}\n\n$message"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                restartQuiz();
+              },
+              child: Text("Recommencer"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text("Page d'accueil"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // Verif la réponse si elle est bonne ou pas + affiche popup avec son explocation
   void checkAnswer(bool userAnswer) {
     final question = questionData.questionList[currentQuestionIndex];
     bool isCorrect = userAnswer == question.response;
@@ -49,47 +108,34 @@ class _QuizScreenState extends State<QuizScreen> {
     );
   }
 
+  // Passe à la question suivante  sinon termine le truc fin montre popup de fin
   void nextQuestion() {
     setState(() {
       if (currentQuestionIndex < questionData.questionList.length - 1) {
         currentQuestionIndex++;
       } else {
-        showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text("🎉 Quiz terminé !"),
-              content: Text(
-                  "Votre score est de $score/${questionData.questionList.length}"),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    restartQuiz();
-                  },
-                  child: Text("Recommencer"),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                  },
-                  child: Text("Page d'accueil"),
-                ),
-              ],
-            );
-          },
-        );
+        _isTimeUp = false;
+        showEndDialog();
       }
     });
   }
 
+  // Bon t'asa compris le principe c'est dans le nom
   void restartQuiz() {
     setState(() {
       currentQuestionIndex = 0;
       score = 0;
+      _timeRemaining = 45;
+      _isTimeUp = false;
       questionData.questionList.shuffle(Random());
+      startTimer();
     });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
   }
 
   @override
@@ -107,11 +153,13 @@ class _QuizScreenState extends State<QuizScreen> {
         child: Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
-            title: Text("Quizz Sneakers",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                )),
+            title: Text(
+              "Timer - $_timeRemaining s",
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             backgroundColor: Colors.transparent,
             elevation: 0,
             centerTitle: true,
