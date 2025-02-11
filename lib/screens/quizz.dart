@@ -30,7 +30,10 @@ class _QuizScreenState extends State<QuizScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(isCorrect ? "✅ Bonne réponse !" : "❌ Mauvaise réponse !"),
+          title: Center(
+            child:
+                Text(isCorrect ? "✅ Bonne réponse !" : "❌ Mauvaise réponse !"),
+          ),
           content: Text(question.explanation),
           actions: [
             TextButton(
@@ -65,6 +68,13 @@ class _QuizScreenState extends State<QuizScreen> {
                     restartQuiz();
                   },
                   child: Text("Recommencer"),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  },
+                  child: Text("Page d'accueil"),
                 ),
               ],
             );
