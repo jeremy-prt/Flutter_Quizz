@@ -49,6 +49,9 @@ class _QuizScreenState extends State<QuizScreen> {
       message = "Ouais... peux mieux faire.";
     }
 
+    // ça va stop mon timer pour fix le bug que j'ai dit plus haut
+    _timer.cancel();
+
     showDialog(
       context: context,
       builder: (context) {
@@ -125,7 +128,7 @@ class _QuizScreenState extends State<QuizScreen> {
     setState(() {
       currentQuestionIndex = 0;
       score = 0;
-      _timeRemaining = 45;
+      _timeRemaining = 60;
       _isTimeUp = false;
       questionData.questionList.shuffle(Random());
       startTimer();
