@@ -2,6 +2,10 @@
 
 Bienvenue sur SneakQuiz, une app de quiz pour Sneakers
 
+![Texte alternatif](readme.png "Readme")
+
+---
+
 ## Prérequis
 
 Avant de commencer, assurez-vous d'avoir les éléments suivants installés sur votre machine :
