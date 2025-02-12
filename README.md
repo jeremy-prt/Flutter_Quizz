@@ -2,7 +2,7 @@
 
 Bienvenue sur SneakQuiz, une app de quiz pour Sneakers
 
-![Texte alternatif](readme.png "Readme")
+<img src="readme.png" alt="Readme" width="300">
 
 ---
 
